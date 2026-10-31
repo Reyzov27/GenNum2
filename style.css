@@ -799,3 +799,112 @@ h2::after{content:"";display:block;width:60px;height:2px;margin-top:9px;backgrou
 #plateBox::before{inset:-26px -70px!important;border-radius:50%!important;filter:blur(36px)!important}
 .plate.sv:not(.t4):not(.t5):not(.t6){box-shadow:none!important}
 .plate.sv svg{filter:drop-shadow(0 8px 14px rgba(0,0,0,.55))}
+
+
+/* ================= ТЕЛЕФОН (итоговый блок, должен быть в самом конце) ================= */
+/* Главная причина кривого вида: в «премиум»-блоке выше у #side стоял position:sticky,
+   он перебивал position:fixed из мобильных правил, и меню занимало 250px слева. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent}
+button,.btn,nav button{touch-action:manipulation}
+input,select,textarea{font-size:16px} /* чтобы iOS не зумил страницу при вводе */
+
+@media(max-width:800px){
+  html,body{max-width:100%;overflow-x:hidden}
+  body{display:block;min-height:100vh;min-height:100dvh}
+
+  /* --- боковое меню: выезжающая шторка --- */
+  #side{
+    position:fixed!important;left:0;top:0;bottom:0;
+    width:min(300px,84vw);height:100vh;height:100dvh;
+    padding:calc(18px + env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+    transform:translateX(-105%);transition:transform .3s ease;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    box-shadow:none;z-index:40;
+  }
+  #side.open{transform:none;box-shadow:14px 0 44px rgba(0,0,0,.7)}
+  #side::after{display:none}
+  #side nav{max-height:none;overflow:visible}
+  #side nav button{padding:14px;font-size:16px}
+  #side .bal{display:block}
+  #overlay.on{z-index:35;backdrop-filter:blur(3px)}
+
+  /* --- кнопка меню и плашка баланса --- */
+  #menuBtn{
+    top:calc(10px + env(safe-area-inset-top));left:calc(10px + env(safe-area-inset-left));
+    width:44px;height:44px;z-index:45;display:grid;place-items:center;
+    background:linear-gradient(180deg,#171a20,#0c0e11);border-color:#2a2f37;
+  }
+  #balChip{
+    top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));
+    max-width:calc(100vw - 76px - env(safe-area-inset-left) - env(safe-area-inset-right));
+    min-height:44px;gap:8px;padding:4px 10px;z-index:30;overflow:hidden;
+  }
+  #balChip .hr{min-width:0}
+  #balChip b{font-size:15px!important;white-space:nowrap}
+  #lvBox{padding-right:8px}
+  .lvbar{width:44px}
+
+  /* --- основной контент --- */
+  main{
+    width:100%;
+    padding:calc(68px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left));
+  }
+  h2{font-size:22px;margin-bottom:12px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+  .fgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
+  .mgrid{grid-template-columns:1fr}
+  .agrid{grid-template-columns:1fr}
+  .pstats{grid-template-columns:repeat(2,1fr)}
+  .btabs{gap:8px}
+
+  /* --- главная (выпадение номера) --- */
+  #v-drop.active{
+    min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px - env(safe-area-inset-top));
+    justify-content:flex-start;gap:12px;
+  }
+  #dropRing{gap:10px}
+  .rbw{width:50px;height:50px}
+  #bar,#feats,#shelf,#oddsBox,#dropMis,#countries{width:100%}
+  #bar{padding:8px 12px}
+  #price{font-size:22px}
+  .stage{width:100%;padding:34px 0 46px}
+  .stage::before{width:100%;height:260px}
+  .stage .floor{width:96%;height:46px}
+  #plateBox{max-width:100%}
+  #plateBox .plate{max-width:100%}
+  #msg{font-size:24px;text-align:center}
+
+  /* страны: сетка 2×2, аккуратные кнопки одной ширины */
+  #countries{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  #countries button{width:100%;min-width:0;justify-content:center;padding:12px 8px;white-space:nowrap}
+
+  /* кнопки «Выбить номер» и ×10 — во всю ширину, текст в одну строку */
+  #rollRow{width:100%;flex-direction:column;gap:10px}
+  #rollRow .btn{width:100%;white-space:nowrap;padding:16px 12px;font-size:19px}
+  #rollRow #roll10{padding:13px 12px;font-size:17px}
+  #choice{width:100%;display:flex;gap:10px}
+  #choice:not([hidden]) .choice-btn{flex:1;min-width:0}
+
+  /* блок «шансы выпадения» */
+  #oddsBox{padding:12px}
+  .oh{flex-wrap:wrap;gap:2px 10px}
+  .orow{gap:5px}
+  .op{padding:4px 8px}
+  .dmc{padding:10px 12px}
+
+  /* --- всплывающие окна --- */
+  .sheet-body{max-height:78vh;max-height:78dvh;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  #toast{bottom:calc(20px + env(safe-area-inset-bottom));max-width:92vw;font-size:14px}
+  #cs,#x10,#cine{padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}
+  .cs-box h3{font-size:24px}
+  .x10box h3{font-size:22px}
+}
+
+@media(max-width:420px){
+  main{padding-left:calc(10px + env(safe-area-inset-left));padding-right:calc(10px + env(safe-area-inset-right))}
+  #balChip b{font-size:14px!important}
+  #balChip .coin{width:18px;height:18px}
+  #rollRow .btn{font-size:18px}
+  .btn{padding:13px 22px}
+}
